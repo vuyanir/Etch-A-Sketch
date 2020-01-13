@@ -3,11 +3,20 @@
     <head>
         <title>Etch-A-Sketch</title>
         <style>
+            @import url('https://fonts.googleapis.com/css?family=Kumar+One&display=swap');
+
+            * {
+                margin:0;
+                padding:0;
+                border:0;
+            }
+
             body {
                 position: relative;
                 margin: auto;
                 max-width: 960px;
                 text-align: center;
+                background-color: #FAFAD2;
             }
 
             button {
@@ -15,35 +24,35 @@
                 margin-bottom: 10px;
                 width: 60px;
             }
+
+            h2 {
+                font-family: 'Kumar One', cursive;
+                color: #FF4500;
+            }
+
+            div.container {
+                background-color: white;
+                overflow: hidden;
+            }
             
         </style>
     </head>
     <body>
         <div>
+            <h2>Etch-A-Sketch</h2>
             <button type="button" id="reset">Reset</button>
         </div>
         <div class='container'>    
         </div>
         <script>
-        /*TODO
-        1. Create a webpage with a 16x16 grid of square divs
-        2. Set up a “hover” effect so that the grid divs change color when your mouse passes over them, 
-            leaving a (pixelated) trail through your grid like a pen would.
-        3. Add a button to the top of the screen which will clear the current grid and send the user a popup 
-            asking for how many squares per side to make the new grid. Once entered the new grid should be 
-            generated in the same total space as before (e.g. 960px wide) and now you’ve got a new sketch pad.
-        4. (Optional): Instead of just changing the color of your grid from black to white (for example) have 
-            each pass through it with the mouse change to a completely random RGB value. Then try having each 
-            pass just add another 10% of black to it so that only after 10 passes is the square completely black.
-        */
-
+        
+        // Create grid
         function createGrid(columns, rows) {
 
             const mainContainer = document.querySelector('div[class=container]');
-            mainContainer.innerHTML = ''
+            mainContainer.innerHTML = '' // clears grid
 
             const size = 960 / columns;
-            console.log(size);
         
             mainContainer.style = `display: grid; \
                                grid-template-columns: repeat(${columns}, ${size}px); \
@@ -67,7 +76,14 @@
 
         function pixelate() {
             const blocks = Array.from(document.querySelectorAll('div[id^="block"]'));
-            blocks.forEach(block => block.addEventListener('mouseenter', function() {this.style = 'background-color: red;'}));
+
+            blocks.forEach(block => block.addEventListener('mouseenter', function() {this.style = `background-color: rgba(${genRGBColor()}, ${genRGBColor()}, ${genRGBColor()});`}));
+        }
+
+        function genRGBColor() {
+            let color =  Math.floor((Math.random() * 255) + 1)
+
+            return color;
         }
 
         function resetDom() {
