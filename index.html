@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Etch-A-Sketch</title>
+        <style>
+            body {
+                position: relative;
+                margin: auto;
+                max-width: 960px;
+                text-align: center;
+            }
+
+            button {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                width: 60px;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div>
+            <button type="button" id="reset">Reset</button>
+        </div>
+        <div class='container'>    
+        </div>
+        <script>
+        /*TODO
+        1. Create a webpage with a 16x16 grid of square divs
+        2. Set up a “hover” effect so that the grid divs change color when your mouse passes over them, 
+            leaving a (pixelated) trail through your grid like a pen would.
+        3. Add a button to the top of the screen which will clear the current grid and send the user a popup 
+            asking for how many squares per side to make the new grid. Once entered the new grid should be 
+            generated in the same total space as before (e.g. 960px wide) and now you’ve got a new sketch pad.
+        4. (Optional): Instead of just changing the color of your grid from black to white (for example) have 
+            each pass through it with the mouse change to a completely random RGB value. Then try having each 
+            pass just add another 10% of black to it so that only after 10 passes is the square completely black.
+        */
+
+        function createGrid(columns, rows) {
+
+            const mainContainer = document.querySelector('div[class=container]');
+            mainContainer.innerHTML = ''
+
+            const size = 960 / columns;
+            console.log(size);
+        
+            mainContainer.style = `display: grid; \
+                               grid-template-columns: repeat(${columns}, ${size}px); \
+                               grid-template-rows: repeat(${rows}, ${size}px); \
+                               grid-column-gap: 1px; \
+                               grid-row-gap: 1px;`;
+
+            let divs = [];
+
+            for(let i = 0; i < (columns * rows); i++) {
+                divs.push(document.createElement('div'));
+            }
+
+            for(div in divs) {
+                divs[div].setAttribute('id', `block${div}`)
+                mainContainer.append(divs[div]);
+            }
+
+            pixelate()
+        }
+
+        function pixelate() {
+            const blocks = Array.from(document.querySelectorAll('div[id^="block"]'));
+            blocks.forEach(block => block.addEventListener('mouseenter', function() {this.style = 'background-color: red;'}));
+        }
+
+        function resetDom() {
+
+            let columns = ''
+            let rows = ''
+
+            do {
+                columns = prompt('How many columns?');
+                rows = prompt('How many rows?');
+            } while (isNaN(columns) || isNaN(rows))
+
+            createGrid(parseInt(columns), parseInt(rows))
+        }
+
+        createGrid(16,16)
+
+        const reset = document.querySelector('button[id=reset]');
+        reset.addEventListener('click', resetDom);
+        
+
+        </script>
+    </body>
+</html>
